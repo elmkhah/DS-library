@@ -70,7 +70,34 @@ class Database:
                 cur.execute("INSERT INTO reserves (applicant, r_book, start_reserve_date, start_waiting_date, start_date, end_date, is_received, is_returned,) VALUES (?, ?, ?, ?, ?, ?, ?, ?,)",(reserve.applicant,reserve.r_book,reserve.start_reserve_date,reserve.start_waiting_date,reserve.start_date,reserve.end_date,reserve.is_received,reserve.is_returned))
             con.commit()
     def update_all(self,_users,_books,_reserves):
-        print(0)
+        for user in _users:
+            cur.execute("SELECT * FROM users WHERE national_code=?", (user.national_code,))
+            existing_user = cur.fetchone()
+
+            if existing_user:
+                cur.execute("UPDATE users SET b_reserve1=? ,b_reserve2=? ,b_reserve3=? ,b_reserve4=? ,b_reserve5=? ,penalty=?, WHERE national_code=?", (user.b_reserve1,user.b_reserve2,user.b_reserve3,user.b_reserve4,user.b_reserve5, user.national_code))
+            else:
+                cur.execute("INSERT INTO users (national_code, firstname, lastname, username, password,penalty,b_reserve1,b_reserve2,b_reserve3,b_reserve4,b_reserve5,is_admin,) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)",(user.national_code, user.firstname, user.lastname, user.username, user.password,user.penalty,user.b_reserve1,user.b_reserve2,user.b_reserve3,user.b_reserve4,user.b_reserve5,user.is_admin))
+            con.commit()
+
+        for book in _books:
+            cur.execute("SELECT * FROM books WHERE ID=?", (book.ID,))
+            existing_book = cur.fetchone()
+
+            if existing_book:
+                continue
+            else:
+                cur.execute("INSERT INTO books (title, content, publication_year,wrtier,) VALUES (?, ?, ?, ?, ?)",(book.title,book.content,book.publication_year,book.writer))
+            con.commit()
+        for reserve in _reserves:
+            cur.execute("SELECT * FROM reserves WHERE ID=?", (reserve.ID,))
+            existing_reserve = cur.fetchone()
+
+            if existing_reserve:
+                cur.execute("UPDATE reserves SET start_waiting_date=? ,start_date=? ,end_date=? ,is_received=? ,is_returned=?", (reserve.start_waiting_date,reserve.start_date,reserve.end_date,reserve.is_received,reserve.is_returned))
+            else:
+                cur.execute("INSERT INTO reserves (applicant, r_book, start_reserve_date, start_waiting_date, start_date, end_date, is_received, is_returned,) VALUES (?, ?, ?, ?, ?, ?, ?, ?,)",(reserve.applicant,reserve.r_book,reserve.start_reserve_date,reserve.start_waiting_date,reserve.start_date,reserve.end_date,reserve.is_received,reserve.is_returned))
+            con.commit()
 
     def last_ID(self,type):
         if(type=="books"):
@@ -78,14 +105,9 @@ class Database:
             return index
         elif(type=="reserves"):
             index=cur.execute("SELECT LAST INDEX ID() FROM reserves")
+            return index
         else:
             return -1
         
 a=Database()
-a.get_users()
-a.get_books()
-a.get_reserves()
-a.get_all()
-
-
 con.close()
