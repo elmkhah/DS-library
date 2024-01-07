@@ -1,6 +1,13 @@
 from _database import*
+from datetime import datetime
 import os
 import time
+
+year=datetime.now().year
+month=datetime.now().month
+day=datetime.now().day
+now=str(year).zfill(4)+str(month).zfill(2)+str(day).zfill(2)
+
 user_list = Database.get_users()
 book_list = Database.get_books()
 # reserve_list=Database.get_reserves()
@@ -19,3 +26,5 @@ while(1):
         break
     time.sleep(2)
     os.system('cls')
+
+    
