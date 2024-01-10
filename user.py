@@ -7,7 +7,10 @@ class user:
         self.firstname=firstname
         self.lastname=lastname
         self.national_code=national_code
-        self.is_admin=False
+        if username=='admin':
+            self.is_admin=1
+        else:
+            self.is_admin=0
         self.penalty=0
         self.b_reserve1="-"
         self.b_reserve2="-"
@@ -28,7 +31,7 @@ class user:
             if current_node.data.username == temp_user.username:
                 if current_node.data.password == temp_user.password:
                     print("log in successful")
-                    return temp_user               ##return current user
+                    return current_node.data               ##return current user
             current_node = current_node.next    
         print("Invalid username or password")     ##error
         return False
@@ -39,7 +42,7 @@ class user:
         temp_user=user()
         temp_user.firstname=input("firstname: ")
         temp_user.lastname=input("lastname: ")
-        temp_user.national_code=input("national code: ")
+        temp_user.national_code=int(input("national code: "))
         temp_user.username=input("username: ")
         temp_user.password=input("password: ")
 
@@ -51,4 +54,5 @@ class user:
                 break
             current_node = current_node.next    
         user_list.insert_first(temp_user)
+        print("user successfully created!")
         return temp_user   # return current user
