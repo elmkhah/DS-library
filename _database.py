@@ -25,7 +25,7 @@ class Database:
         cur.execute("SELECT * FROM users")
         users=cur.fetchall()
         for i in users:
-            _user=user(i[0],i[3],i[4],i[1],i[2])
+            _user=user(national_code=i[0],username=i[3],password=i[4],firstname=i[1],lastname=i[2],penalty=i[5],b_reserve1=i[7],b_reserve2=i[8],b_reserve3=i[9],b_reserve4=i[10],b_reserve5=i[11])
             _users.insert_first(_user)
         return _users
     
@@ -35,7 +35,7 @@ class Database:
         cur.execute("SELECT * FROM reserves")
         reserves=cur.fetchall()
         for i in reserves:
-            _reserve=reserve(i[0],i[1],i[2],i[3],i[4],i[5],i[6],i[7])
+            _reserve=reserve(i[0],i[1],i[2],i[3],i[4],i[5],i[6],i[7],i[8])
             _reserves.append(_reserve)
         return _reserves 
 
@@ -45,7 +45,7 @@ class Database:
         cur.execute("SELECT * FROM books")
         books=cur.fetchall()
         for i in books:
-            _book=book(i[1],i[2],i[3],i[4])
+            _book=book(i[0],i[1],i[2],i[3],i[4])
             _books.insert_first(_book)
         return _books
     
@@ -57,7 +57,7 @@ class Database:
             existing_user = cur.fetchone()
 
             if existing_user:
-                cur.execute("UPDATE users SET b_reserve1=? ,b_reserve2=? ,b_reserve3=? ,b_reserve4=? ,b_reserve5=? ,penalty=?", (user.data.b_reserve1,user.data.b_reserve2,user.data.b_reserve3,user.data.b_reserve4,user.data.b_reserve5,user.data.penalty))
+                cur.execute("UPDATE users SET b_reserve1=? ,b_reserve2=? ,b_reserve3=? ,b_reserve4=? ,b_reserve5=? ,penalty=? WHERE national_code=?", (user.data.b_reserve1,user.data.b_reserve2,user.data.b_reserve3,user.data.b_reserve4,user.data.b_reserve5,user.data.penalty,user.data.national_code))
             else:
                 cur.execute("INSERT INTO users (national_code, firstname, lastname, username, password, penalty, b_reserve1, b_reserve2, b_reserve3, b_reserve4, b_reserve5, is_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user.data.national_code, user.data.firstname, user.data.lastname, user.data.username, user.data.password, user.data.penalty, user.data.b_reserve1, user.data.b_reserve2, user.data.b_reserve3, user.data.b_reserve4, user.data.b_reserve5, user.data.is_admin))
             con.commit()
@@ -85,7 +85,7 @@ class Database:
             existing_reserve = cur.fetchone()
 
             if existing_reserve:
-                cur.execute("UPDATE reserves SET start_waiting_date=? ,start_date=? ,end_date=? ,is_received=? ,is_returned=?", (reserve.start_waiting_date,reserve.start_date,reserve.end_date,reserve.is_received,reserve.is_returned))
+                cur.execute("UPDATE reserves SET start_waiting_date=? ,start_date=? ,end_date=? ,is_received=? ,is_returned=? WHERE ID=?", (reserve.start_waiting_date,reserve.start_date,reserve.end_date,reserve.is_received,reserve.is_returned,reserve.ID))
             else:
                 cur.execute("INSERT INTO reserves (applicant, r_book, start_reserve_date, start_waiting_date, start_date, end_date, is_received, is_returned) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",(reserve.applicant,reserve.r_book,reserve.start_reserve_date,reserve.start_waiting_date,reserve.start_date,reserve.end_date,reserve.is_received,reserve.is_returned))
             con.commit()
@@ -100,3 +100,7 @@ class Database:
     #         return index
     #     else:
     #         return -1
+            
+    def delete():
+        cur.execute("DELETE FROM reserves WHERE ID>0")
+        con.commit()

@@ -2,8 +2,8 @@ from _database import*
 from user import*
 
 class book:
-    def __init__(self,title=None,content=None,publication_year=None,writer=None):
-        self.ID=-1
+    def __init__(self,ID=-1,title=None,content=None,publication_year=None,writer=None):
+        self.ID=ID
         self.title=title
         self.content=content
         self.publication_year=publication_year

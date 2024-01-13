@@ -1,7 +1,7 @@
 from book import*
 from linked_list import*
 class user:
-    def __init__(self,national_code=None,username=None,password=None,firstname=None,lastname=None):
+    def __init__(self,national_code=None,username=None,password=None,firstname=None,lastname=None,penalty=0,b_reserve1=None,b_reserve2=None,b_reserve3=None,b_reserve4=None,b_reserve5=None):
         self.username=username
         self.password=password
         self.firstname=firstname
@@ -11,12 +11,36 @@ class user:
             self.is_admin=1
         else:
             self.is_admin=0
-        self.penalty=0
-        self.b_reserve1="-"
-        self.b_reserve2="-"
-        self.b_reserve3="-"
-        self.b_reserve4="-"
-        self.b_reserve5="-"
+
+        if not penalty == 0:
+            self.penalty=penalty
+        else:
+            self.penalty=0
+
+        if b_reserve1==None:
+            self.b_reserve1=None
+        else:
+            self.b_reserve1=b_reserve1
+
+        if b_reserve2==None:
+            self.b_reserve2=None
+        else:
+            self.b_reserve2=b_reserve2
+        
+        if b_reserve3==None:
+            self.b_reserve3=None
+        else:
+            self.b_reserve3=b_reserve3
+        
+        if b_reserve4==None:
+            self.b_reserve4=None
+        else:
+            self.b_reserve4=b_reserve4
+        
+        if b_reserve5==None:
+            self.b_reserve5=None
+        else:
+            self.b_reserve5=b_reserve5
 
     ## login with username and password
     def login(user_list):
