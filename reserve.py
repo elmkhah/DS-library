@@ -107,7 +107,15 @@ class reserve:
             current_node=current_node.next
         return reserve_queue
     
-
+    def check_waiting_date(reserve_list):
+        for i in reserve_list:
+            if i.start_waiting_date and not i.is_received:
+                waiting=datetime(i.start_waiting_date[0:4],i.start_waiting_date[4:6],i.start_waiting_date[6:8])
+                receive_time=now-waiting
+                receive_time=receive_time.days
+                if(receive_time>3):
+                    i.is_received=True
+                    i.is_returned=True
     def get_reserved_book(user_list,book_list,reserve_list,reserve_queue):
         temp_reserve=reserve()
         temp_reserve.applicant=input("Applicant username: ")

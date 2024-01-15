@@ -15,7 +15,7 @@ user_list = Database.get_users()
 book_list = Database.get_books()
 reserve_list=Database.get_reserves()
 reserve_queue=reserve.create_reserve_queue(reserve_list,book_list)
-
+reserve.check_waiting_date(reserve_list)
 
 while(1):
     print("Welcome to DS-library\n1-login\n2-register\n0-exit")
