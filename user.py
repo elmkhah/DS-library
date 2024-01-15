@@ -80,3 +80,23 @@ class user:
         user_list.insert_first(temp_user)
         print("user successfully created!")
         return temp_user   # return current user
+    
+    def add_book_to_user(self,_book):
+        if self.b_reserve1==None:
+            self.b_reserve1=_book
+            return _book
+        elif self.b_reserve2==None:
+            self.b_reserve2=_book
+            return _book
+        elif self.b_reserve3==None:
+            self.b_reserve3=_book
+            return _book
+        elif self.b_reserve4==None:
+            self.b_reserve4=_book
+            return _book
+        elif self.b_reserve5==None:
+            self.b_reserve5=_book
+            return _book
+        else:
+            print("You booked the maximum possible number!")
+            return

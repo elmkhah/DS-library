@@ -22,6 +22,8 @@ class reserve:
         self.is_received=is_received
         self.is_returned=is_returned
 
+
+
     def new_reserve_book(reserve_list,book_list,user_list,reserve_queue):
         temp_reserves=reserve()
         temp_reserves.applicant=input("Applicant username: ")
@@ -53,6 +55,11 @@ class reserve:
              print("user not found!")
              return
         
+        for i in reserve_list:
+            if i.applicant==temp_reserves.applicant and i.r_book==temp_reserves.r_book and i.is_received==0:
+                print("you are already reserved this book!")
+                return
+        
         if temp_reserves.r_book==temp_user.b_reserve1 or temp_reserves.r_book==temp_user.b_reserve2 or temp_reserves.r_book==temp_user.b_reserve3 or temp_reserves.r_book==temp_user.b_reserve4 or temp_reserves.r_book==temp_user.b_reserve5:
             print("you are already reserved this book!")
             return
@@ -64,15 +71,15 @@ class reserve:
         
 
         reserve_queue[book_ID].enqueue(temp_reserves)
-        if temp_user.b_reserve1==None and temp_user.b_reserve1!=temp_reserves.r_book:
+        if temp_user.b_reserve1==None:
             temp_user.b_reserve1=temp_reserves.r_book
-        elif temp_user.b_reserve2==None and temp_user.b_reserve2!=temp_reserves.r_book:
+        elif temp_user.b_reserve2==None:
             temp_user.b_reserve2=temp_reserves.r_book
-        elif temp_user.b_reserve3==None and temp_user.b_reserve3!=temp_reserves.r_book:
+        elif temp_user.b_reserve3==None:
             temp_user.b_reserve3=temp_reserves.r_book
-        elif temp_user.b_reserve4==None and temp_user.b_reserve4!=temp_reserves.r_book:
+        elif temp_user.b_reserve4==None:
             temp_user.b_reserve4=temp_reserves.r_book
-        elif temp_user.b_reserve5==None and temp_user.b_reserve5!=temp_reserves.r_book:
+        elif temp_user.b_reserve5==None:
             temp_user.b_reserve5=temp_reserves.r_book  
         else:
             print("You booked the maximum possible number")
@@ -86,6 +93,7 @@ class reserve:
         print("book reserved successfully!")
         return 1
     
+
     def create_reserve_queue(reserve_list,book_list):
         reserve_queue=[]
         current_node=book_list.head
@@ -98,3 +106,57 @@ class reserve:
             reserve_queue.append(queue_list)
             current_node=current_node.next
         return reserve_queue
+    
+
+    def get_reserved_book(user_list,book_list,reserve_list,reserve_queue):
+        temp_reserve=reserve()
+        temp_reserve.applicant=input("Applicant username: ")
+        temp_reserve.r_book=input("book title: ")
+
+        book_ID=-1
+        current_node=book_list.head
+        while current_node:
+            if current_node.data.title==temp_reserve.r_book:
+                book_ID=current_node.data.ID
+                break
+            current_node=current_node.next   
+
+        current_node=user_list.head
+        while current_node:
+            if current_node.data.username==temp_reserve.applicant:
+                temp_user=current_node.data
+                break
+            current_node=current_node.next
+
+        is_found=False
+        for i in reserve_list:
+            if temp_reserve.applicant == i.applicant and temp_reserve.r_book==i.r_book and not i.is_received:
+                is_found=True
+                temp_reserve=i
+                if reserve_queue[book_ID-1].first() and reserve_queue[book_ID-1].first().applicant != i.applicant:
+                    print("The book has not returned yet!")
+                    return
+                
+        if not is_found:
+            print("reserve not found!")
+            return
+        
+        temp_reserve.is_received=1
+        temp_reserve.start_date=now
+        temp_reserve.end_date=_end
+        reserve_list[temp_reserve.ID-1]=temp_reserve
+
+        result=temp_user.add_book_to_user(temp_reserve.r_book)
+        if not result:
+            return
+        
+        print("the book was successfully delivered!")
+
+        return reserve_list
+
+    def expand_reserve():
+        print("f")
+
+
+    def return_book():
+        print(30)

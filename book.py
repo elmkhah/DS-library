@@ -22,7 +22,7 @@ class book:
         while current_node:
             if current_node.data.title == temp_book.title:
                 print("Duplicate book found")
-                break
+                return
             current_node = current_node.next    
         book_list.insert_first(temp_book)
         print("book successfully added!")

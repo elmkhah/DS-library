@@ -36,17 +36,19 @@ while(1):
 
             # admin futures:
             while(1):
-                print("\n1-add a book\n2-reserve a book\n3-return a book\n4-extend a reserve\n0-back")
-                num=int(input())
-                if num==1:
-                    book.ad5_book(book_list)
-                elif num==2:
+                print("\n1-add a book\n2-reserve a book\n3-return a book\n4-extend a reserve\n5-get reserved book\n0-back")
+                num=input()
+                if num=='1':
+                    book.add_book(book_list)
+                elif num=='2':
                     reserve.new_reserve_book(reserve_list,book_list,user_list,reserve_queue)
-                elif num==3:
+                elif num=='3':
                     print("return a book")
-                elif num==4:
+                elif num=='4':
                     print("extend a reserve")
-                elif num==0:
+                elif num=='5':
+                    reserve.get_reserved_book(user_list,book_list,reserve_list,reserve_queue)
+                else:
                     break
                 Database.update_users(user_list)
                 Database.update_books(book_list)
