@@ -1,102 +1,99 @@
+from book import book
 class AVLNode:
-    def __init__(self, data=None):
-        self.data = data
+    def __init__(self, key:book, left=None, right=None):
+        self.key = key
+        self.left = left
+        self.right = right
         self.height = 1
-        self.balance_factor = 0
-        self.left = None
-        self.right = None
-
-
+    
 class AVLTree:
     def __init__(self):
         self.root = None
 
-    def _height(self, node):
+    def height(self, node):
         if node is None:
             return 0
         return node.height
 
-    def _update_height(self, node):
-        if node is not None:
-            node.height = 1 + max(self._height(node.left), self._height(node.right))
+    def update_height(self, node):
+        node.height = 1 + max(self.height(node.left), self.height(node.right))
 
-    def _update_balance_factor(self, node):
-        if node is not None:
-            node.balance_factor = self._height(node.left) - self._height(node.right)
+    def balance_factor(self, node):
+        if node is None:
+            return 0
+        return self.height(node.left) - self.height(node.right)
 
-    def _rotate_left(self, z):
-        y = z.right
-        T2 = y.left
-
-        y.left = z
-        z.right = T2
-
-        self._update_height(z)
-        self._update_height(y)
-
-        self._update_balance_factor(z)
-        self._update_balance_factor(y)
-
-        return y
-
-    def _rotate_right(self, y):
+    def rotate_right(self, y):
         x = y.left
         T2 = x.right
 
         x.right = y
         y.left = T2
 
-        self._update_height(y)
-        self._update_height(x)
-
-        self._update_balance_factor(y)
-        self._update_balance_factor(x)
+        self.update_height(y)
+        self.update_height(x)
 
         return x
 
-    def _balance(self, node):
+    def rotate_left(self, x):
+        y = x.right
+        T2 = y.left
+
+        y.left = x
+        x.right = T2
+
+        self.update_height(x)
+        self.update_height(y)
+
+        return y
+
+    def balance(self, node):
         if node is None:
             return node
 
-        self._update_height(node)
-        self._update_balance_factor(node)
+        self.update_height(node)
 
         # Left Heavy
-        if node.balance_factor > 1:
+        if self.balance_factor(node) > 1:
             # Left-Right Case
-            if node.left.balance_factor < 0:
-                node.left = self._rotate_left(node.left)
-            return self._rotate_right(node)
+            if self.balance_factor(node.left) < 0:
+                node.left = self.rotate_left(node.left)
+            return self.rotate_right(node)
 
         # Right Heavy
-        if node.balance_factor < -1:
+        if self.balance_factor(node) < -1:
             # Right-Left Case
-            if node.right.balance_factor > 0:
-                node.right = self._rotate_right(node.right)
-            return self._rotate_left(node)
+            if self.balance_factor(node.right) > 0:
+                node.right = self.rotate_right(node.right)
+            return self.rotate_left(node)
 
         return node
 
-    def insert(self, data):
-        self.root = self._insert(self.root, data)
-
-    def _insert(self, root, data):
+    def insert(self, root, key):
         if root is None:
-            return AVLNode(data)
+            return AVLNode(key)
 
-        if data < root.data:
-            root.left = self._insert(root.left, data)
-        elif data > root.data:
-            root.right = self._insert(root.right, data)
+        if key.title < root.key.title:
+            root.left = self.insert(root.left, key)
+        elif key.title > root.key.title:
+            root.right = self.insert(root.right, key)
         else:
-            #dadeh tekrari (dar barnameh nadarim)
             return root
 
-        return self._balance(root)
+        return self.balance(root)
 
+    def insert_key(self, key):
+        self.root = self.insert(self.root, key)
 
-    # def inorder_traversal(self, root):
-    #     if root:
-    #         self.inorder_traversal(root.left)
-    #         print(root.data, end=' ')
-    #         self.inorder_traversal(root.right)
+    def search(self,key):
+        return self._search(self.root,key)
+        
+    def _search(self,node,key):
+        if  node.key.title==key:
+         return node
+        elif node is None:
+            return None
+        elif key<node.key.title:
+          return self._search(node.left,key)
+        else :return self._search(node.right,key)
+    

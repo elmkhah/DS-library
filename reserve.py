@@ -1,5 +1,6 @@
 from user import*
 from book import*
+from AVL import*
 from reserve_queue import _Queue
 from datetime import datetime,timedelta
 _end_time=datetime.now()+timedelta(days=10)
@@ -32,13 +33,21 @@ class reserve:
 
         #exception
         exist=0
+        
+        
+        book_avl=AVLTree()
+        
         current_node=book_list.head
         while current_node:
-            if current_node.data.title==temp_reserves.r_book:
-                exist=1
-                book_ID=current_node.data.ID-1
-                break
+            book_avl.insert_key(current_node.data)
             current_node=current_node.next
+        if book_avl.search(temp_reserves.r_book) is None:
+            exist=0
+        else:
+            book_search=book_avl.search(temp_reserves.r_book)
+            book_ID=book_search.key.ID-1
+            exist=1 
+       
         if exist==0:
             print("book not found!")
             return
@@ -120,14 +129,19 @@ class reserve:
         temp_reserve=reserve()
         temp_reserve.applicant=input("Applicant username: ")
         temp_reserve.r_book=input("book title: ")
-
+        #inja
         book_ID=-1
+        book_avl=AVLTree()
+        
         current_node=book_list.head
         while current_node:
-            if current_node.data.title==temp_reserve.r_book:
-                book_ID=current_node.data.ID
-                break
-            current_node=current_node.next   
+            book_avl.insert_key(current_node.data)
+            current_node=current_node.next
+        if book_avl.search(temp_reserve.r_book):
+            book_search=book_avl.search(temp_reserve.r_book)
+            book_ID=book_search.key.ID-1
+        
+         
 
         current_node=user_list.head
         while current_node:
