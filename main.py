@@ -45,7 +45,7 @@ while(1):
                 elif num=='3':
                     print("return a book")
                 elif num=='4':
-                    print("extend a reserve")
+                    reserve.expand_reserve(book_list,reserve_list,reserve_queue)
                 elif num=='5':
                     reserve.get_reserved_book(user_list,book_list,reserve_list,reserve_queue)
                 else:

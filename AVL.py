@@ -89,10 +89,10 @@ class AVLTree:
         return self._search(self.root,key)
         
     def _search(self,node,key):
+        if not node:
+            return None
         if  node.key.title==key:
          return node
-        elif node is None:
-            return None
         elif key<node.key.title:
           return self._search(node.left,key)
         else :return self._search(node.right,key)

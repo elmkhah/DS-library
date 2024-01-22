@@ -112,7 +112,7 @@ class reserve:
                 for i in reserve_list:
                     if i.r_book==current_node.data.title and not i.is_returned:
                         queue_list.enqueue(i)
-            reserve_queue.append(queue_list)
+            reserve_queue.insert(0,queue_list)
             current_node=current_node.next
         return reserve_queue
     
@@ -129,7 +129,6 @@ class reserve:
         temp_reserve=reserve()
         temp_reserve.applicant=input("Applicant username: ")
         temp_reserve.r_book=input("book title: ")
-        #inja
         book_ID=-1
         book_avl=AVLTree()
         
@@ -176,8 +175,35 @@ class reserve:
 
         return reserve_list
 
-    def expand_reserve():
-        print("f")
+    def expand_reserve(book_list,reserve_list,reserve_queue):
+        temp_reserve=reserve()
+        temp_reserve.applicant=input("applicant username: ")
+        temp_reserve.r_book=input("book title: ")
+
+        book_ID=-1
+        book_avl=AVLTree()
+        
+        current_node=book_list.head
+        while current_node:
+            book_avl.insert_key(current_node.data)
+            current_node=current_node.next
+        if book_avl.search(temp_reserve.r_book):
+            book_search=book_avl.search(temp_reserve.r_book)
+            book_ID=book_search.key.ID-1
+        else:
+            print("reserve not found!")
+            return
+
+        for i in reserve_list:
+            if i.applicant==temp_reserve.applicant and i.r_book==temp_reserve.r_book and not i.is_returned:
+                if reserve_queue[book_ID].first() and reserve_queue[book_ID].first().applicant==temp_reserve.applicant:
+                    i.end_date=_end
+                    print("The book was extended for 10 days!")
+                    return 1
+                print("Unsuccessful! Other people are waiting for this book!")
+                return
+        print("reserve not found!")
+        return
 
 
     def return_book():
