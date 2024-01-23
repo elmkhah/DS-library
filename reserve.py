@@ -206,5 +206,51 @@ class reserve:
         return
 
 
-    def return_book():
-        print(30)
+    def return_book(book_list,reserve_list,user_list,reserve_queue):
+        temp_reserve=reserve()
+        temp_reserve.applicant=input("applicant username: ")
+        temp_reserve.r_book=input("book title: ")
+        
+        book_avl=AVLTree()
+        current_node=book_list.head
+        while current_node:
+            book_avl.insert_key(current_node.data)
+            current_node=current_node.next
+        if book_avl.search(temp_reserve.r_book):
+            book_search=book_avl.search(temp_reserve.r_book)
+            book_ID=book_search.key.ID-1
+        else:
+            print("reserve not found!")
+            return
+        exist=0
+        current_node=user_list.head
+        while current_node:
+            if current_node.data.username==temp_reserve.applicant:
+                exist=1
+                temp_user=current_node.data
+                break
+            current_node=current_node.next
+        if exist==0:
+             print("user not found!")
+             return
+        for i in reserve_list:
+            if i.applicant==temp_reserve.applicant and i.r_book==temp_reserve.r_book and not i.is_returned:
+                i.is_returned=1
+                date_end=str(i.end_date)
+                date=datetime(year=int(date_end[0:4]), month=int(date_end[4:6]), day=int(date_end[6:8]))
+                return_time=datetime.now()-timedelta(date)
+                if return_time.day>0:
+                    temp_user.penalty+=day
+                    reserve_queue[book_ID].first().next.waiting_date=now
+        
+        
+        if not temp_user.b_reserve1==None and temp_user.b_reserve1==book_search.key.title:
+            temp_user.b_reserve1=None
+        elif not temp_user.b_reserve2==None and temp_user.b_reserve2==book_search.key.title:
+            temp_user.b_reserve2=None
+        elif not temp_user.b_reserve3==None and temp_user.b_reserve3==book_search.key.title:
+            temp_user.b_reserve3=None
+        elif not temp_user.b_reserve4==None and temp_user.b_reserve4==book_search.key.title:
+            temp_user.b_reserve4=None
+        elif not temp_user.b_reserve5==None and temp_user.b_reserve5==book_search.key.title:
+            temp_user.b_reserve5=None
