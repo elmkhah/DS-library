@@ -10,19 +10,23 @@ class AVLTree:
     def __init__(self):
         self.root = None
 
+    #return height of a node
     def height(self, node):
         if node is None:
             return 0
         return node.height
 
+    #update height of a node
     def update_height(self, node):
         node.height = 1 + max(self.height(node.left), self.height(node.right))
 
+    #return left_height - right_height
     def balance_factor(self, node):
         if node is None:
             return 0
         return self.height(node.left) - self.height(node.right)
 
+    #rotate to right
     def rotate_right(self, y):
         x = y.left
         T2 = x.right
@@ -35,6 +39,7 @@ class AVLTree:
 
         return x
 
+    #rotate to left
     def rotate_left(self, x):
         y = x.right
         T2 = y.left
@@ -47,6 +52,7 @@ class AVLTree:
 
         return y
 
+    #balacing function 
     def balance(self, node):
         if node is None:
             return node
@@ -69,6 +75,7 @@ class AVLTree:
 
         return node
 
+    #insert to avl tree
     def insert(self, root, key):
         if root is None:
             return AVLNode(key)
@@ -82,9 +89,11 @@ class AVLTree:
 
         return self.balance(root)
 
+    #insert key
     def insert_key(self, key):
         self.root = self.insert(self.root, key)
 
+    #search in avl
     def search(self,key):
         return self._search(self.root,key)
         

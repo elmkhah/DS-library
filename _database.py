@@ -89,18 +89,3 @@ class Database:
             else:
                 cur.execute("INSERT INTO reserves (applicant, r_book, start_reserve_date, start_waiting_date, start_date, end_date, is_received, is_returned) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",(reserve.applicant,reserve.r_book,reserve.start_reserve_date,reserve.start_waiting_date,reserve.start_date,reserve.end_date,reserve.is_received,reserve.is_returned))
             con.commit()
-
-    #read last ID in books and reserves : enter at type: "books" or "reserves"
-    # def last_ID(type):
-    #     if(type=="books"):
-    #         index=cur.execute("SELECT MAX(ID) FROM books")
-    #         return index
-    #     elif(type=="reserves"):
-    #         index=cur.execute("SELECT MAX(ID) FROM reserves")
-    #         return index
-    #     else:
-    #         return -1
-            
-    def delete():
-        cur.execute("DELETE FROM reserves WHERE ID>0")
-        con.commit()

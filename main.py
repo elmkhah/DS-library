@@ -10,13 +10,27 @@ month=datetime.now().month
 day=datetime.now().day
 now=str(year).zfill(4)+str(month).zfill(2)+str(day).zfill(2)
 
-# Database.delete()
 user_list = Database.get_users()
 book_list = Database.get_books()
 reserve_list=Database.get_reserves()
 reserve_queue=reserve.create_reserve_queue(reserve_list,book_list)
-reserve.check_waiting_date(reserve_list)
+reserve_list,reserve_queue=reserve.check_waiting_date(reserve_list,reserve_queue)
+Database.update_reserves(reserve_list)
+reserve_list=Database.get_reserves()
 
+##########################################################################
+##########                                                      ##########
+##########                    DS - library                      ##########
+##########                                                      ##########
+##########                mohammad ali elmkhah                  ##########
+##########                 mohammad sadeghian                   ##########
+##########                 seyed ali akhlaghi                   ##########
+##########                                                      ##########
+##########################################################################
+
+
+
+#login - register form
 while(1):
     print("Welcome to DS-library\n1-login\n2-register\n0-exit")
     num=input()
@@ -56,7 +70,7 @@ while(1):
                 book_list=Database.get_books()
                 user_list=Database.get_users()
                 reserve_list=Database.get_reserves()
-                reserve.create_reserve_queue(reserve_list,book_list)
+                reserve_queue=reserve.create_reserve_queue(reserve_list,book_list)
 
             # normal user olny can see reserved books
         else:
@@ -82,6 +96,7 @@ while(1):
                 print(counter,end=" ")
                 print("- "+log.b_reserve5)
                 counter+=1
+            print("\nyour penalty: " + str(log.penalty))
             input("\n\npress <enter> to back to main menu:")
             
     os.system('cls')
